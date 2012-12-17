@@ -1,0 +1,29 @@
+#DO NOT CHANGE THIS VERSION NUMBER!
+Version: 3
+
+#Do you wish to see debugging messages for all events?
+Debug: false
+
+# Do you wish to globally enable or disable any of these controls?
+# True = Enabled, False = Disabled
+Enabled:
+  Grass: true
+  Mycelium: true
+  Vine: true
+
+# Per world configuration
+# These will use configurations, worlds NOT listed will NOT
+# have GrowthLimiter modifying anything
+Worlds:
+  world:
+    Grass: 80
+    Mycelium: 85
+    Vine: 50
+    Vine-Distance: 10
+  skylands:
+    Grass: 90
+    Mycelium: 10
+    Vine: 20
+    Vine-Distance: 10
+
+#New config format for GrowthLimiter v0.3-SNAPSHOT

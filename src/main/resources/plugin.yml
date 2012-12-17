@@ -1,0 +1,6 @@
+name: GrowthLimiter
+main: com.afterkraft.growthlimiter.GrowthLimiter
+version: 0.3
+author: gabizou
+description: Limits those pesky BlockSpread events to a configurable percentage
+website: http://dev.bukkit.org/server-mods/growthlimiter/
