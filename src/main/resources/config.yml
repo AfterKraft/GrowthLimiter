@@ -4,8 +4,8 @@ Version: 3
 #Do you wish to see debugging messages for all events?
 Debug: false
 
-# Do you wish to globally enable or disable any of these controls?
-# True = Enabled, False = Disabled
+#Do you wish to globally enable or disable any of these controls?
+#True = Enabled, False = Disabled
 Enabled:
   Grass: true
   Mycelium: true
@@ -19,11 +19,6 @@ Worlds:
     Grass: 80
     Mycelium: 85
     Vine: 50
-    Vine-Distance: 10
-  skylands:
-    Grass: 90
-    Mycelium: 10
-    Vine: 20
     Vine-Distance: 10
 
 #New config format for GrowthLimiter v0.3-SNAPSHOT
