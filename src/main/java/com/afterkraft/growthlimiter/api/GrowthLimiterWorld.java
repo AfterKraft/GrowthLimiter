@@ -28,6 +28,11 @@
 
 package com.afterkraft.growthlimiter.api;
 
+/**
+ * Represents a configured world for Bukkit
+ * @author gabizou
+ *
+ */
 public class GrowthLimiterWorld {
     
     public boolean grassBoolean = true;  // Is grass growth control enabled in this world?
@@ -45,5 +50,47 @@ public class GrowthLimiterWorld {
     @Override
     public String toString() {
         return worldName;
+    }
+    
+    public void setName(String name) {
+        this.worldName = name;
+    }
+    
+    public void setGrassGrowth(int grassGrowth) {
+        this.grassGrowth = grassGrowth;
+    }
+    
+    public void setMyceliumGrowth(int myceliumGrowth) {
+        this.myceliumGrowth = myceliumGrowth;
+    }
+    
+    public void setVineGrowth(int vineGrowth) {
+        this.vineGrowth = vineGrowth;
+    }
+    
+    public void setVineMaxDistance(int vineMaxDistance) {
+        this.vineMaxDistance = vineMaxDistance;
+    }
+    
+    public int getGrassGrowth() {
+        return grassGrowth;
+    }
+    
+    public int getMyceliumGrowth() {
+        return myceliumGrowth;
+    }
+    
+    public int getVineGrowth() {
+        return vineGrowth;
+    }
+    
+    public int getVineMaxDistance() {
+        return vineMaxDistance;
+    }
+    
+    public void calculatePercentages() {
+        grassGrowthPercent = grassGrowth/100;
+        myceliumGrowthPercent = myceliumGrowth/100;
+        vineGrowthPercent = vineGrowth/100;
     }
 }

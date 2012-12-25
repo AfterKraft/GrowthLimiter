@@ -105,6 +105,8 @@ public class GrowthLimiterConfig {
         plugin.debug = debug;
 
     }
+    
+    
 
     /**
      * This is used to parse an old config and convert to the new format
@@ -149,6 +151,9 @@ public class GrowthLimiterConfig {
                 Worlds.add(world);
                 log.info("Done!");
             }
+            break;
+        case 3: 
+            growthConfigParser();
             break;
         }
 

@@ -55,7 +55,7 @@ public final class GrowthLimiter extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         log = getLogger();
-        this.log.info("Ståarting GrowthLimiter!");
+        this.log.info("Starting GrowthLimiter!");
         loadConfig();
         enableListeners();
         loadMetrics();
