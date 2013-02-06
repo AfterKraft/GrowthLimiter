@@ -29,14 +29,12 @@
 package com.afterkraft.growthlimiter;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import com.afterkraft.growthlimiter.api.GrowthLimiterWorld;
 
 public class GrowthLimiterConfig {
@@ -45,14 +43,12 @@ public class GrowthLimiterConfig {
     protected static List<GrowthLimiterWorld> Worlds;
     private static List<String> stringWorlds;
     private static boolean firstTimeLoading = true;
-    private File configFile;
-
     private GrowthLimiter plugin;
     private final Logger log;
     private FileConfiguration config;
     private int configConvertVersion = 0;
 
-    private int configVersion = 3;
+    private final int configVersion = 4;
 
     public GrowthLimiterConfig(GrowthLimiter plugin) {
         this.plugin = plugin;
@@ -67,15 +63,14 @@ public class GrowthLimiterConfig {
 
         Worlds = new ArrayList<GrowthLimiterWorld>();
         // Check for existance of config file
-        File configFile = new File(plugin.getDataFolder().toString() + "/config.yml");
-        config = YamlConfiguration.loadConfiguration(configFile);
+        config = plugin.getConfig();
 
         if (!new File(plugin.getDataFolder(), "config.yml").exists()) {
             plugin.saveDefaultConfig();
             growthConfigParser();
         } else {
             try {
-                config.load(configFile);
+                plugin.getConfig();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -83,14 +78,20 @@ public class GrowthLimiterConfig {
                 firstTimeLoading = false;
                 // Determine whether the configuration file needs to be
                 // converted or not
-                configVersion = 3;
                 if (config.getInt("Version") == configVersion) {
                     log.info("Loading Configuration file");
                     configConvertVersion = configVersion;
                     // Parse config now
                     growthConfigParser();
+                } else if (config.contains("Version")) {
+                    configConvertVersion = config.getInt("Version");
+                    log.info("ConfigurationConvertVersion is: " + configConvertVersion);
+                    legacyConfigParser();
+                    legacyConfigConverter();
+                    plugin.saveConfig();
+                    growthConfigParser();
                 } else {
-                    log.info("Old config detected! Reading old config to prepare for conversion!");
+                    log.info("Legacy Configuration detected! Reading old config to prepare for conversion!");
                     configConvertVersion = 2;
                     legacyConfigParser();
                     legacyConfigConverter();
@@ -105,8 +106,6 @@ public class GrowthLimiterConfig {
         plugin.debug = debug;
 
     }
-    
-    
 
     /**
      * This is used to parse an old config and convert to the new format
@@ -152,7 +151,40 @@ public class GrowthLimiterConfig {
                 log.info("Done!");
             }
             break;
-        case 3: 
+        case 3: // Parse for GrowthLimiter v0.3
+            if (config.getBoolean("Debug")) {
+                debug = true;
+            }
+            stringWorlds = new ArrayList<String>();
+            stringWorlds.addAll(plugin.getConfig().getConfigurationSection("Worlds").getKeys(false));
+            if (!Worlds.isEmpty())
+                Worlds.clear();
+
+            for (String stringWorldName : stringWorlds) {
+                GrowthLimiterWorld temp = new GrowthLimiterWorld();
+                temp.worldName = stringWorldName;
+                Worlds.add(temp);
+            }
+            plugin.debug = config.getBoolean("Debug");
+            plugin.grassBoolean = config.getBoolean("Enabled.Grass");
+            plugin.myceliumBoolean = config.getBoolean("Enabled.Mycelium");
+            plugin.vineBoolean = config.getBoolean("Enabled.Vine");
+            plugin.wheatBoolean = true;
+            plugin.configVersion = config.getInt("Version");
+            for (GrowthLimiterWorld world : Worlds) {
+                world.grassGrowth = config.getInt("Worlds." + world.worldName + ".Grass");
+                world.myceliumGrowth = config.getInt("Worlds." + world.worldName + ".Mycelium");
+                world.vineGrowth = config.getInt("Worlds." + world.worldName + ".Vine");
+                world.vineMaxDistance = config.getInt("Worlds." + world.worldName + ".Vine-Distance");
+                world.wheatGrowth = 50;
+                world.grassGrowthPercent = (double) world.grassGrowth / 100;
+                world.myceliumGrowthPercent = (double) world.myceliumGrowth / 100;
+                world.vineGrowthPercent = (double) world.vineGrowth / 100;
+                world.wheatGrowthPercent = (double) world.wheatGrowth / 100;
+            }
+            plugin.worlds = Worlds;
+            break;
+        case 4:
             growthConfigParser();
             break;
         }
@@ -161,7 +193,7 @@ public class GrowthLimiterConfig {
 
     /**
      * Parse for current config if passed not-legacy-check Effective as of v0.3
-     * (Config version 3)
+     * (Config version 4)
      */
     private void growthConfigParser() {
         if (config.getBoolean("Debug")) {
@@ -178,6 +210,7 @@ public class GrowthLimiterConfig {
             Worlds.add(temp);
         }
         plugin.debug = config.getBoolean("Debug");
+        // Grass Boolean
         plugin.grassBoolean = config.getBoolean("Enabled.Grass");
         if (debug) {
             if (plugin.grassBoolean) {
@@ -186,6 +219,7 @@ public class GrowthLimiterConfig {
                 log.info("Grass control is disabled!");
             }
         }
+        // Mycelium Boolean
         plugin.myceliumBoolean = config.getBoolean("Enabled.Mycelium");
         if (debug) {
             if (plugin.myceliumBoolean) {
@@ -194,6 +228,7 @@ public class GrowthLimiterConfig {
                 log.info("mycelium control is disabled!");
             }
         }
+        // Vine Boolean
         plugin.vineBoolean = config.getBoolean("Enabled.Vine");
         if (debug) {
             if (plugin.vineBoolean) {
@@ -202,15 +237,26 @@ public class GrowthLimiterConfig {
                 log.info("Vine control is disabled!");
             }
         }
+        // Wheat Boolean
+        plugin.wheatBoolean = config.getBoolean("Enabled.Wheat");
+        if (debug) {
+            if (plugin.wheatBoolean) {
+                log.info("Wheat Control is enabled!");
+            } else {
+                log.info("Wheat control is disabled!");
+            }
+        }
         plugin.configVersion = config.getInt("Version");
         for (GrowthLimiterWorld world : Worlds) {
             world.grassGrowth = config.getInt("Worlds." + world.worldName + ".Grass");
             world.myceliumGrowth = config.getInt("Worlds." + world.worldName + ".Mycelium");
             world.vineGrowth = config.getInt("Worlds." + world.worldName + ".Vine");
             world.vineMaxDistance = config.getInt("Worlds." + world.worldName + ".Vine-Distance");
-            world.grassGrowthPercent = (double) world.grassGrowth/100;
-            world.myceliumGrowthPercent = (double) world.myceliumGrowth/100;
-            world.vineGrowthPercent = (double) world.vineGrowth/100;
+            world.wheatGrowth = config.getInt("Worlds." + world.worldName + ".Wheat");
+            world.grassGrowthPercent = (double) world.grassGrowth / 100;
+            world.myceliumGrowthPercent = (double) world.myceliumGrowth / 100;
+            world.vineGrowthPercent = (double) world.vineGrowth / 100;
+            world.wheatGrowthPercent = (double) world.wheatGrowth / 100;
         }
         plugin.worlds = Worlds;
     }
@@ -221,17 +267,19 @@ public class GrowthLimiterConfig {
      */
     private void legacyConfigConverter() {
         // Should already have been parsed, so Worlds already exists;
-        if (configConvertVersion == 2) {
+        switch (configConvertVersion) {
+        case 2: // GrowthLimiter v0.2
             log.info("Converting old config file to latest version!");
             config.set("Growth", null);
             config.set("Worlds", null);
             config.set("Debug", null);
-            config.set("Version", 3);
+            config.set("Version", configVersion);
             config.set("Debug", debug);
             config.createSection("Enabled");
             config.set("Enabled.Grass", true);
             config.set("Enabled.Mycelium", true);
             config.set("Enabled.Vine", true);
+            config.set("Enabled.Wheat", true);
             // Create per world configuration
             log.info("Creating defaults for each world from old config data");
             for (GrowthLimiterWorld world : Worlds) {
@@ -246,14 +294,24 @@ public class GrowthLimiterConfig {
                 worldSection.set("Mycelium", world.myceliumGrowth);
                 worldSection.set("Vine", world.vineGrowth);
                 worldSection.set("Vine-Distance", world.vineMaxDistance);
+                worldSection.set("Wheat", world.wheatGrowth);
             }
+            plugin.saveConfig();
             log.info("Done converting! Please make sure to check out the config for new things!");
-        }
-        try {
-            File configFile = new File(plugin.getDataFolder().toString() + "/config.yml");
-            config.save(configFile);
-        } catch (IOException e) {
-            log.warning("Hey, I had issues saving the config file! \n" + e);
+            break;
+        case 3: // GrowthLimiter v0.3
+            log.info("Converting from Version 3 to Current Version!");
+            config.set("Version", configVersion);
+            // Add Wheat stuffs
+            config.set("Enabled.Wheat", true);
+            for (GrowthLimiterWorld world : Worlds) {
+                ConfigurationSection worldSection = config.getConfigurationSection("Worlds." + world.worldName);
+                worldSection.set("Wheat", world.wheatGrowth);
+            }
+            plugin.saveConfig();
+            log.info("Done converting! Please make sure to check out the config for new things!");
+            break;
+
         }
 
     }
@@ -278,18 +336,15 @@ public class GrowthLimiterConfig {
                     log.info(" " + world.worldName + "'s vine maximum length is : " + world.vineMaxDistance + " blocks");
                 } else
                     log.info(" " + world.worldName + "'s vine growth control is DISABLED");
+                if (plugin.wheatBoolean) {
+                    log.info(" " + world.worldName + "'s wheat growth control is ENABLED");
+                    log.info(" " + world.worldName + "'s wheat growth percentage is : " + world.wheatGrowthPercent + "%");
+                } else
+                    log.info(" " + world.worldName + "'s wheat growth control is DISABLED");
             }
 
         }
 
-    }
-
-    public void save() {
-        try {
-            config.save(configFile);
-        } catch (IOException e) {
-            log.warning("Hey, I couldn't save the config file!!" + e);
-        }
     }
 
     public List<GrowthLimiterWorld> getWorlds() {

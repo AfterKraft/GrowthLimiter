@@ -37,6 +37,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.afterkraft.growthlimiter.api.GrowthLimiterWorld;
+import com.afterkraft.growthlimiter.listeners.GrowthLimiterBlockGrowthListener;
 import com.afterkraft.growthlimiter.listeners.GrowthLimiterBlockSpreadListener;
 import com.afterkraft.growthlimiter.metrics.Metrics;
 
@@ -46,11 +47,13 @@ public final class GrowthLimiter extends JavaPlugin implements Listener {
     public boolean grassBoolean = true;
     public boolean myceliumBoolean = true;
     public boolean vineBoolean = true;
+    public boolean wheatBoolean = true;
     protected List<GrowthLimiterWorld> worlds;
     private GrowthLimiterConfig config;
     protected int configVersion = 0;
     private Logger log;
-    private GrowthLimiterBlockSpreadListener listener;
+    private GrowthLimiterBlockSpreadListener blockSpreadListener;
+    private GrowthLimiterBlockGrowthListener blockGrowthListener;
 
     @Override
     public void onEnable() {
@@ -70,13 +73,15 @@ public final class GrowthLimiter extends JavaPlugin implements Listener {
     
     private void enableListeners() {
         log.info("Hooking listeners...");
-        listener = new GrowthLimiterBlockSpreadListener(this, config);
+        blockSpreadListener = new GrowthLimiterBlockSpreadListener(this, config);
+        blockGrowthListener = new GrowthLimiterBlockGrowthListener(this, config);
         log.info("Listeners enabled!");
     }
 
     @Override
     public void onDisable() {
-        HandlerList.unregisterAll(listener);
+        HandlerList.unregisterAll(blockSpreadListener);
+        HandlerList.unregisterAll(blockGrowthListener);
         saveConfig();
     }
 

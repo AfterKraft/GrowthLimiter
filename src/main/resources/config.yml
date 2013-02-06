@@ -1,5 +1,5 @@
 #DO NOT CHANGE THIS VERSION NUMBER!
-Version: 3
+Version: 4
 
 #Do you wish to see debugging messages for all events?
 Debug: false
@@ -10,6 +10,7 @@ Enabled:
   Grass: true
   Mycelium: true
   Vine: true
+  Wheat: true
 
 # Per world configuration
 # These will use configurations, worlds NOT listed will NOT
@@ -20,5 +21,6 @@ Worlds:
     Mycelium: 85
     Vine: 50
     Vine-Distance: 10
+    Wheat: 50
 
 #New config format for GrowthLimiter v0.3-SNAPSHOT

@@ -38,13 +38,16 @@ public class GrowthLimiterWorld {
     public boolean grassBoolean = true;  // Is grass growth control enabled in this world?
     public boolean myceliumBoolean = true;   // Is mycelium growth control enabled in this world?
     public boolean vineBoolean = true;   // Is vine growth control enabled in this world?
+    public boolean wheatBoolean = true; // Is wheat growth control enabled in this world?
     public int grassGrowth = 50;  // World grass growth percentage
     public int myceliumGrowth = 50;  // World mycelium growth percentage
     public int vineGrowth = 50;   // World vine growth percentage
     public int vineMaxDistance = 10;   // World vine maximum growth length
+    public int wheatGrowth = 50; // World wheat growth percentage
     public double grassGrowthPercent = 0.5;   // World growth percentage for calculation
     public double myceliumGrowthPercent = 0.5;   // World growth percentage for calculation
     public double vineGrowthPercent = 0.5;   // World growth percentage for calculation
+    public double wheatGrowthPercent = 0.5; // World growth percentage for calculation
     public String worldName = "world";   // World string name for processing
 
     @Override
@@ -72,6 +75,10 @@ public class GrowthLimiterWorld {
         this.vineMaxDistance = vineMaxDistance;
     }
     
+    public void setWheatGrowth(int wheatGrowth) {
+        this.wheatGrowth = wheatGrowth;
+    }
+    
     public int getGrassGrowth() {
         return grassGrowth;
     }
@@ -88,9 +95,14 @@ public class GrowthLimiterWorld {
         return vineMaxDistance;
     }
     
+    public int getWheatGrowth() {
+        return wheatGrowth;
+    }
+    
     public void calculatePercentages() {
         grassGrowthPercent = grassGrowth/100;
         myceliumGrowthPercent = myceliumGrowth/100;
         vineGrowthPercent = vineGrowth/100;
+        wheatGrowthPercent = wheatGrowth/100;
     }
 }
