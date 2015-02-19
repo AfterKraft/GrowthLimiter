@@ -5,7 +5,7 @@
 	<artifactId>GrowthLimiter</artifactId>
 	<name>GrowthLimiter</name>
 	<description>Limits BlockSpread based on percentage.</description>
-	<version>0.4</version>
+	<version>0.4.2</version>
 	<repositories>
 		<repository>
 			<id>Plugin Metrics</id>
@@ -13,7 +13,7 @@
 		</repository>
 		<repository>
 			<id>bukkit-repo</id>
-			<url>http://repo.bukkit.org/content/groups/public</url>
+			<url>http://repo.md-5.net/content/groups/public</url>
 		</repository>
 	</repositories>
 	<dependencies>

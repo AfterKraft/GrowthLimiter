@@ -1,6 +1,6 @@
 name: GrowthLimiter
 main: com.afterkraft.growthlimiter.GrowthLimiter
-version: 0.4
+version: 0.4.2
 author: gabizou
 description: Limits all types of growth by a configurable percentage
 website: http://dev.bukkit.org/server-mods/growthlimiter/

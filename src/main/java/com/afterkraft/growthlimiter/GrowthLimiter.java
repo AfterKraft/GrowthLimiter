@@ -48,6 +48,8 @@ public final class GrowthLimiter extends JavaPlugin implements Listener {
     public boolean myceliumBoolean = true;
     public boolean vineBoolean = true;
     public boolean wheatBoolean = true;
+    public boolean sugarBoolean = true;
+    public boolean cactusBoolean = true;
     protected List<GrowthLimiterWorld> worlds;
     private GrowthLimiterConfig config;
     protected int configVersion = 0;

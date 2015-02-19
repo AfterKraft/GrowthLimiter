@@ -36,6 +36,7 @@ import com.afterkraft.growthlimiter.GrowthLimiter;
 import com.afterkraft.growthlimiter.GrowthLimiterConfig;
 import com.afterkraft.growthlimiter.api.GrowthLimiterWorld;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -63,16 +64,16 @@ public class GrowthLimiterBlockSpreadListener implements Listener {
      * 
      * Grass, Mycelium, Vines
      * 
-     * @param BlockSpreadEvents
+     * @param event The event to process
      */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = false)
     public void onBlockSpread(BlockSpreadEvent event) {
-        int fromType = event.getSource().getTypeId(); // Get source ID
+        Material fromType = event.getSource().getType(); // Get source ID
         String eventWorldString = event.getSource().getWorld().getName();
         for (GrowthLimiterWorld world : Worlds) {
             if (eventWorldString.equalsIgnoreCase(world.worldName)) {
                 // Grass Processing
-                if (fromType == 2) {
+                if (fromType == Material.GRASS) {
                     if (plugin.grassBoolean) {
                         Random rand = new Random();
                         double random = rand.nextDouble();
@@ -100,7 +101,7 @@ public class GrowthLimiterBlockSpreadListener implements Listener {
 
                 }
                 // Now for Mycelium processing
-                if (fromType == 110) {
+                if (fromType == Material.MYCEL) {
                     if (plugin.myceliumBoolean) {
                         Random rand = new Random();
                         double random = rand.nextDouble();
@@ -127,7 +128,7 @@ public class GrowthLimiterBlockSpreadListener implements Listener {
                     }
                 }
                 // Vine Processing
-                if (fromType == 106) {
+                if (fromType == Material.VINE) {
                     if (plugin.vineBoolean) {
                         Random rand = new Random();
                         double random = rand.nextDouble();
@@ -141,7 +142,7 @@ public class GrowthLimiterBlockSpreadListener implements Listener {
                                         + ", a vine didn't grow!");
                             }
                             return;
-                        } else if (block.getTypeId() == 106) {
+                        } else if (block.getType() == Material.VINE) {
                             event.setCancelled(true);
                             if (plugin.debug) {
                                 log.info("[" + world.worldName + "]" + "The vine max distance is :"

@@ -28,6 +28,8 @@
 
 package com.afterkraft.growthlimiter.api;
 
+import com.google.common.base.Objects;
+
 /**
  * Represents a configured world for Bukkit
  * @author gabizou
@@ -44,65 +46,52 @@ public class GrowthLimiterWorld {
     public int vineGrowth = 50;   // World vine growth percentage
     public int vineMaxDistance = 10;   // World vine maximum growth length
     public int wheatGrowth = 50; // World wheat growth percentage
+    public int sugarCaneGrowth = 50;
+    public int cactusGrowth = 50;
     public double grassGrowthPercent = 0.5;   // World growth percentage for calculation
     public double myceliumGrowthPercent = 0.5;   // World growth percentage for calculation
     public double vineGrowthPercent = 0.5;   // World growth percentage for calculation
     public double wheatGrowthPercent = 0.5; // World growth percentage for calculation
+    public double sugarGrowthPercent = 0.5;
+    public double cactusGrowthPercent = 0.5;
     public String worldName = "world";   // World string name for processing
 
     @Override
     public String toString() {
         return worldName;
     }
-    
-    public void setName(String name) {
-        this.worldName = name;
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(grassBoolean, myceliumBoolean, vineBoolean, wheatBoolean, grassGrowth, myceliumGrowth, vineGrowth, vineMaxDistance,
+                                wheatGrowth, sugarCaneGrowth, cactusGrowth, grassGrowthPercent, myceliumGrowthPercent, vineGrowthPercent,
+                                wheatGrowthPercent, worldName);
     }
-    
-    public void setGrassGrowth(int grassGrowth) {
-        this.grassGrowth = grassGrowth;
-    }
-    
-    public void setMyceliumGrowth(int myceliumGrowth) {
-        this.myceliumGrowth = myceliumGrowth;
-    }
-    
-    public void setVineGrowth(int vineGrowth) {
-        this.vineGrowth = vineGrowth;
-    }
-    
-    public void setVineMaxDistance(int vineMaxDistance) {
-        this.vineMaxDistance = vineMaxDistance;
-    }
-    
-    public void setWheatGrowth(int wheatGrowth) {
-        this.wheatGrowth = wheatGrowth;
-    }
-    
-    public int getGrassGrowth() {
-        return grassGrowth;
-    }
-    
-    public int getMyceliumGrowth() {
-        return myceliumGrowth;
-    }
-    
-    public int getVineGrowth() {
-        return vineGrowth;
-    }
-    
-    public int getVineMaxDistance() {
-        return vineMaxDistance;
-    }
-    
-    public int getWheatGrowth() {
-        return wheatGrowth;
-    }
-    
-    public void calculatePercentages() {
-        grassGrowthPercent = grassGrowth/100;
-        myceliumGrowthPercent = myceliumGrowth/100;
-        vineGrowthPercent = vineGrowth/100;
-        wheatGrowthPercent = wheatGrowth/100;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final GrowthLimiterWorld other = (GrowthLimiterWorld) obj;
+        return Objects.equal(this.grassBoolean, other.grassBoolean)
+               && Objects.equal(this.myceliumBoolean, other.myceliumBoolean)
+               && Objects.equal(this.vineBoolean, other.vineBoolean)
+               && Objects.equal(this.wheatBoolean, other.wheatBoolean)
+               && Objects.equal(this.grassGrowth, other.grassGrowth)
+               && Objects.equal(this.myceliumGrowth, other.myceliumGrowth)
+               && Objects.equal(this.vineGrowth, other.vineGrowth)
+               && Objects.equal(this.vineMaxDistance, other.vineMaxDistance)
+               && Objects.equal(this.wheatGrowth, other.wheatGrowth)
+               && Objects.equal(this.sugarCaneGrowth, other.sugarCaneGrowth)
+               && Objects.equal(this.cactusGrowth, other.cactusGrowth)
+               && Objects.equal(this.grassGrowthPercent, other.grassGrowthPercent)
+               && Objects.equal(this.myceliumGrowthPercent, other.myceliumGrowthPercent)
+               && Objects.equal(this.vineGrowthPercent, other.vineGrowthPercent)
+               && Objects.equal(this.wheatGrowthPercent, other.wheatGrowthPercent)
+               && Objects.equal(this.worldName, other.worldName);
     }
 }

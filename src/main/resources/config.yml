@@ -11,6 +11,8 @@ Enabled:
   Mycelium: true
   Vine: true
   Wheat: true
+  Cactus: true
+  Sugar: true
 
 # Per world configuration
 # These will use configurations, worlds NOT listed will NOT
@@ -22,5 +24,7 @@ Worlds:
     Vine: 50
     Vine-Distance: 10
     Wheat: 50
+    Cactus: 50
+    Sugar: 50
 
 #New config format for GrowthLimiter v0.3-SNAPSHOT

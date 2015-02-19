@@ -246,6 +246,22 @@ public class GrowthLimiterConfig {
                 log.info("Wheat control is disabled!");
             }
         }
+        plugin.sugarBoolean = config.getBoolean("Enabled.Sugar");
+        if (debug) {
+            if (plugin.sugarBoolean) {
+                log.info("Sugar Control is enabled!");
+            } else {
+                log.info("Sugar control is disabled!");
+            }
+        }
+        plugin.cactusBoolean = config.getBoolean("Enabled.Cactus");
+        if (debug) {
+            if (plugin.cactusBoolean) {
+                log.info("Cactus control is enabled!");
+            } else {
+                log.info("Cactus control is disabled!");
+            }
+        }
         plugin.configVersion = config.getInt("Version");
         for (GrowthLimiterWorld world : Worlds) {
             world.grassGrowth = config.getInt("Worlds." + world.worldName + ".Grass");
@@ -253,10 +269,14 @@ public class GrowthLimiterConfig {
             world.vineGrowth = config.getInt("Worlds." + world.worldName + ".Vine");
             world.vineMaxDistance = config.getInt("Worlds." + world.worldName + ".Vine-Distance");
             world.wheatGrowth = config.getInt("Worlds." + world.worldName + ".Wheat");
+            world.cactusGrowth = config.getInt("Worlds." + world.worldName + ".Cactus");
+            world.sugarCaneGrowth = config.getInt("Worlds." + world.worldName + ".Sugar");
             world.grassGrowthPercent = (double) world.grassGrowth / 100;
             world.myceliumGrowthPercent = (double) world.myceliumGrowth / 100;
             world.vineGrowthPercent = (double) world.vineGrowth / 100;
             world.wheatGrowthPercent = (double) world.wheatGrowth / 100;
+            world.cactusGrowthPercent = (double) world.cactusGrowth / 100;
+            world.sugarGrowthPercent = (double) world.sugarCaneGrowth / 100;
         }
         plugin.worlds = Worlds;
     }
